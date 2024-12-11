@@ -1,19 +1,17 @@
-class Account {
-    double balance;
-    
-    public Account(double balance) {
-        this.balance = balance;
-    }
+class Account()
+{
+    public double Balance { get; set; }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public string? EmailAddress { get; set; }
+    public string? Username { get; set; }
 
-    public double getBalance() {
-        return balance;
+    public void Deposit(double money)
+    {
+        Balance += money;
     }
-    
-    public void Deposit(double money) {
-        this.balance += money;
-    }
-
-    public void Withdraw(double money) {
-        this.balance -= money;
+    public void Withdraw(double money)
+    {
+        Balance -= money;
     }
 }
