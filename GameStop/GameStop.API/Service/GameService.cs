@@ -11,26 +11,32 @@ public class GameService : IGameService
 
     public Game CreateNewGame(Game game)
     {
-        throw new NotImplementedException();
+        return _gameRepository.CreateNewGame(game);
     }
 
-    public Game DeleteGameById(int id)
+    public Game? DeleteGameById(int id)
     {
-        throw new NotImplementedException();
+        var game = GetGameById(id);
+
+        if (game is not null) _gameRepository.DeleteGameById(id);
+
+        return game;
     }
 
-    public Game GetGameById(int id)
+    public Game? GetGameById(int id)
     {
-        throw new NotImplementedException();
+        if (id < 1) return null;
+
+        return _gameRepository.GetGameById(id);
     }
 
     public IEnumerable<Game> GetGames()
     {
-        throw new NotImplementedException();
+        return _gameRepository.GetGames();
     }
 
     public Game UpdateGame(int id, Game game)
     {
-        throw new NotImplementedException();
+        return _gameRepository.UpdateGame(id, game);
     }
 }

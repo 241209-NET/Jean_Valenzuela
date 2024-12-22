@@ -6,7 +6,7 @@ public interface IGameService
 {
     Game CreateNewGame(Game game);
     IEnumerable<Game> GetGames();
-    Game GetGameById(int id);
+    Game? GetGameById(int id);
     Game UpdateGame(int id, Game game);
-    Game DeleteGameById(int id);
+    Game? DeleteGameById(int id);
 }
