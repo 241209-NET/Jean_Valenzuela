@@ -3,10 +3,10 @@ using GameStop.API.Model;
 
 namespace GameStop.API.Repository;
 
-public class AccounRepository : IAccountRepository
+public class AccountRepository : IAccountRepository
 {
     private readonly GameStopContext _gameStopContext;
-    public AccounRepository(GameStopContext gameStopContext) => _gameStopContext = gameStopContext;
+    public AccountRepository(GameStopContext gameStopContext) => _gameStopContext = gameStopContext;
 
     public Account CreateNewAccount(Account account)
     {

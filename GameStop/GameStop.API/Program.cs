@@ -1,4 +1,6 @@
 using GameStop.API.Data;
+using GameStop.API.Repository;
+using GameStop.API.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,9 +15,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Dependency Inject the proper services
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IGameRepository, GameRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 
 // Add Controllers
+builder.Services.AddControllers();
 
 
 var app = builder.Build();

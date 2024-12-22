@@ -1,4 +1,5 @@
 using GameStop.API.Model;
+using GameStop.API.Repository;
 
 namespace GameStop.API.Service;
 
