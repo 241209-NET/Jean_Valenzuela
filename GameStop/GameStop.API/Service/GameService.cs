@@ -35,8 +35,12 @@ public class GameService : IGameService
         return _gameRepository.GetGames();
     }
 
-    public Game? UpdateGame(int id, Game game)
+    public Game? UpdateGame(int id, Game _game)
     {
-        return _gameRepository.UpdateGame(id, game);
+        var game = GetGameById(id);
+
+        if (game is not null) _gameRepository.UpdateGame(id, _game);
+
+        return game;
     }
 }

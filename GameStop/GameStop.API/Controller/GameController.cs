@@ -8,8 +8,8 @@ namespace GameStop.API.Controller;
 [ApiController]
 public class GameController : ControllerBase
 {
-    private readonly GameService _gameService;
-    public GameController(GameService gameService) => _gameService = gameService;
+    private readonly IGameService _gameService;
+    public GameController(IGameService gameService) => _gameService = gameService;
 
     [HttpGet]
     public IActionResult GetGames()
@@ -27,7 +27,7 @@ public class GameController : ControllerBase
         return Ok(game);
     }
 
-    [HttpPut]
+    [HttpPut("{id}")]
     public IActionResult UpdateGame(int id, Game _game)
     {
         var game = _gameService.UpdateGame(id, _game);

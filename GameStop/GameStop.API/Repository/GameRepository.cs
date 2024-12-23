@@ -1,5 +1,6 @@
 using GameStop.API.Data;
 using GameStop.API.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameStop.API.Repository;
 
@@ -7,7 +8,7 @@ public class GameRepository : IGameRepository
 {
     private readonly GameStopContext _gameStopContext;
     public GameRepository(GameStopContext gameStopContext) => _gameStopContext = gameStopContext;
-    
+
     public Game CreateNewGame(Game game)
     {
         _gameStopContext.Games.Add(game);
@@ -33,12 +34,16 @@ public class GameRepository : IGameRepository
         return _gameStopContext.Games.ToList();
     }
 
-    public Game? UpdateGame(int id, Game _game)
+    public void UpdateGame(int id, Game _game)
     {
-        var game = GetGameById(id);
+        var game = GetGameById(id)!;
 
-        if (game is not null) _gameStopContext.Games.Update(_game);
+        game.Price = _game.Price;
+        game.ReleaseDate = _game.ReleaseDate;
+        game.Name = _game.Name;
+        game.Genre = _game.Genre;
+        game.Version = _game.Version;
 
-        return game;
+        _gameStopContext.SaveChanges();
     }
 }
