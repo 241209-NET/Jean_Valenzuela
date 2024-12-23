@@ -119,7 +119,7 @@ namespace GameStop.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderID"));
 
-                    b.Property<int?>("AccountId")
+                    b.Property<int>("AccountId")
                         .HasColumnType("int");
 
                     b.Property<string>("PaymentMethod")
@@ -159,7 +159,7 @@ namespace GameStop.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"));
 
-                    b.Property<int?>("AccountId")
+                    b.Property<int>("AccountId")
                         .HasColumnType("int");
 
                     b.Property<DateOnly>("Date")
@@ -169,7 +169,7 @@ namespace GameStop.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("GameId")
+                    b.Property<int>("GameId")
                         .HasColumnType("int");
 
                     b.Property<int>("Rating")
@@ -201,20 +201,32 @@ namespace GameStop.API.Migrations
 
             modelBuilder.Entity("GameStop.API.Model.Order", b =>
                 {
-                    b.HasOne("GameStop.API.Model.Account", null)
+                    b.HasOne("GameStop.API.Model.Account", "Account")
                         .WithMany("Orders")
-                        .HasForeignKey("AccountId");
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("GameStop.API.Model.Review", b =>
                 {
-                    b.HasOne("GameStop.API.Model.Account", null)
+                    b.HasOne("GameStop.API.Model.Account", "Account")
                         .WithMany("Reviews")
-                        .HasForeignKey("AccountId");
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("GameStop.API.Model.Game", null)
+                    b.HasOne("GameStop.API.Model.Game", "Game")
                         .WithMany("Reviews")
-                        .HasForeignKey("GameId");
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Game");
                 });
 
             modelBuilder.Entity("GameStop.API.Model.Account", b =>

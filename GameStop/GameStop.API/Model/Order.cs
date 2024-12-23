@@ -11,4 +11,5 @@ public class Order
     public string? ShippingCity { get; set; }
     public string? ShippingState { get; set; }
     public List<Game>? Games { get; set; }
+    public required Account Account { get; set; } 
 }
