@@ -31,4 +31,3 @@ This is a Full Stack Web App made in .NET to help users build and persist their 
 - User should be able to retrive game information
 ## Tables
 ![ERD](https://github.com/241209-NET/Jean_Valenzuela/blob/main/GameStop/ER_Diagram.svg)
-<img src = "https://raw.githubusercontent.com/241209-NET/Jean_Valenzuela/refs/heads/main/GameStop/ER_Diagram.svg">
