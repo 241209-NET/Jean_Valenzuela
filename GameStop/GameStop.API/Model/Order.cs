@@ -10,6 +10,5 @@ public class Order
     public string? ShippingStreetAddress { get; set; }
     public string? ShippingCity { get; set; }
     public string? ShippingState { get; set; }
-    public Account? Account { get; set; }
     public List<Game>? Games { get; set; }
 }

@@ -11,4 +11,5 @@ public class GameStopContext : DbContext
     public virtual DbSet<Account> Accounts{ get; set; } 
     public virtual DbSet<Game> Games{ get; set; }
     public virtual DbSet<Order> Orders{ get; set; }
+    public virtual DbSet<Review> Reviews{ get; set; }
 }

@@ -9,4 +9,6 @@ public class Game
     public required double? Price { get; set; }
     public string? Type { get; set; }
     public DateOnly ReleaseDate { get; set; }
+    public List<Order>? Orders { get; set; }
+    public List<Review>? Reviews { get; set; }
 }

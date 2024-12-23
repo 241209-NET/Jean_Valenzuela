@@ -12,6 +12,6 @@ public class Account
     public string? Street { get; set; }
     public string? city { get; set; }
     public string? state { get; set; }
-
     public List<Order>? Orders { get; set; }
+    public List<Review>? Reviews { get; set; }
 }

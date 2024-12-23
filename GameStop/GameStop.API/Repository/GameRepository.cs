@@ -10,26 +10,35 @@ public class GameRepository : IGameRepository
     
     public Game CreateNewGame(Game game)
     {
-        throw new NotImplementedException();
+        _gameStopContext.Games.Add(game);
+        _gameStopContext.SaveChanges();
+
+        return game;
     }
 
-    public Game DeleteGameById(int id)
+    public void DeleteGameById(int id)
     {
-        throw new NotImplementedException();
+        var game = GetGameById(id);
+        _gameStopContext.Games.Remove(game!);
+        _gameStopContext.SaveChanges();
     }
 
-    public Game GetGameById(int id)
+    public Game? GetGameById(int id)
     {
-        throw new NotImplementedException();
+        return _gameStopContext.Games.Find(id);
     }
 
     public IEnumerable<Game> GetGames()
     {
-        throw new NotImplementedException();
+        return _gameStopContext.Games.ToList();
     }
 
-    public Game UpdateGame(int id, Game game)
+    public Game? UpdateGame(int id, Game _game)
     {
-        throw new NotImplementedException();
+        var game = GetGameById(id);
+
+        if (game is not null) _gameStopContext.Games.Update(_game);
+
+        return game;
     }
 }

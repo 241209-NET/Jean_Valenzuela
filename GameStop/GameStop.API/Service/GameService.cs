@@ -35,7 +35,7 @@ public class GameService : IGameService
         return _gameRepository.GetGames();
     }
 
-    public Game UpdateGame(int id, Game game)
+    public Game? UpdateGame(int id, Game game)
     {
         return _gameRepository.UpdateGame(id, game);
     }
