@@ -6,8 +6,8 @@ public interface IAccountService
 {
     Account CreateNewAccount(Account account);
     IEnumerable<Account> GetAccounts();
-    Account GetAccountById(int id);
-    Account UpdateAccount(int id, Account account);
-    Account DeleteAccountById(int id);
+    Account? GetAccountById(int id);
+    Account? UpdateAccount(int id, Account account);
+    Account? DeleteAccountById(int id);
 
 }

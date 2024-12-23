@@ -10,26 +10,44 @@ public class AccountRepository : IAccountRepository
 
     public Account CreateNewAccount(Account account)
     {
-        throw new NotImplementedException();
+        _gameStopContext.Accounts.Add(account);
+        _gameStopContext.SaveChanges();
+
+        return account;
     }
 
-    public Account DeleteAccountById(int id)
+    public void DeleteAccountById(int id)
     {
-        throw new NotImplementedException();
+        var account = GetAccountById(id);
+
+        _gameStopContext.Accounts.Remove(account!);
+        _gameStopContext.SaveChanges();
     }
 
-    public Account GetAccountById(int id)
+    public Account? GetAccountById(int id)
     {
-        throw new NotImplementedException();
+        return _gameStopContext.Accounts.Find(id);
     }
 
     public IEnumerable<Account> GetAccounts()
     {
-        throw new NotImplementedException();
+        return _gameStopContext.Accounts.ToList();
     }
 
-    public Account UpdateAccount(int id, Account account)
+    public void UpdateAccount(int id, Account _account)
     {
-        throw new NotImplementedException();
+        var account = GetAccountById(id)!;
+
+        account.State = _account.State;
+        account.FirstName = _account.FirstName;
+        account.Street = _account.Street;
+        account.LastName = _account.LastName;
+        account.Email = _account.Email;
+        account.Password = _account.Password;
+        account.Age = _account.Age;
+        account.City = _account.City;
+        account.ZipCode = _account.ZipCode;
+
+        _gameStopContext.SaveChanges();
     }
 }

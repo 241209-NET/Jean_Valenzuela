@@ -1,3 +1,4 @@
+using GameStop.API.Model;
 using GameStop.API.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,5 +12,47 @@ public class AccountController : ControllerBase
 
     public AccountController(IAccountService accountService) => _accountService = accountService;
 
+    [HttpGet]
+    public IActionResult GetAccounts()
+    {
+        var accounts = _accountService.GetAccounts();
 
+        return Ok(accounts);
+    }
+
+    [HttpPost]
+    public IActionResult CreateAccount(Account account)
+    {
+        var newAccount = _accountService.CreateNewAccount(account);
+
+        return Ok(newAccount);
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult UpdateAccount(int id, Account _account)
+    {
+        var account = _accountService.UpdateAccount(id, _account);
+
+        return Ok(account);
+    }
+
+    [HttpGet("{id}")]
+    public IActionResult GetAccountById(int id)
+    {
+        var account = _accountService.GetAccountById(id);
+
+        if (account is null) return NotFound();
+
+        return Ok(account);
+    }
+
+    [HttpDelete]
+    public IActionResult DeleteAccountById(int id)
+    {
+        var account = _accountService.GetAccountById(id);
+
+        if (account is null) return NotFound();
+
+        return Ok(account);
+    }
 }

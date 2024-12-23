@@ -11,26 +11,36 @@ public class AccountService : IAccountService
 
     public Account CreateNewAccount(Account account)
     {
-        throw new NotImplementedException();
+        return _accountRepository.CreateNewAccount(account);
     }
 
-    public Account DeleteAccountById(int id)
+    public Account? DeleteAccountById(int id)
     {
-        throw new NotImplementedException();
+        var account = _accountRepository.GetAccountById(id);
+
+        if(account is not null) _accountRepository.DeleteAccountById(id);
+
+        return account;
     }
 
-    public Account GetAccountById(int id)
+    public Account? GetAccountById(int id)
     {
-        throw new NotImplementedException();
+        if( id < 1) return null;
+
+        return _accountRepository.GetAccountById(id);
     }
 
     public IEnumerable<Account> GetAccounts()
     {
-        throw new NotImplementedException();
+        return _accountRepository.GetAccounts();
     }
 
-    public Account UpdateAccount(int id, Account account)
+    public Account? UpdateAccount(int id, Account _account)
     {
-        throw new NotImplementedException();
+        var account = GetAccountById(id);
+
+        if (account is not null) _accountRepository.UpdateAccount(id, _account);
+
+        return account;
     }
 }
