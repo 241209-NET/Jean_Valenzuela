@@ -1,5 +1,5 @@
 # **GameStop .NET API**
-This is a Full Stack Web App made in .NET to help users build and persist their Pokemon teams to a backend. 
+This is a .NET API Application for a GameStop Online Store 
 
 ## Project Members
 - Jean Carlos Valenzuela Sanchez
