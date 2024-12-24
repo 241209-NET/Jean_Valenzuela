@@ -10,26 +10,41 @@ public class OrderRepository : IOrderRepository
     
     public Order CreateNewOrder(Order order)
     {
-        throw new NotImplementedException();
+        _gameStopContext.Orders.Add(order);
+        _gameStopContext.SaveChanges();
+        return order;
     }
 
-    public Order DeleteOrderById(int id)
+    public void DeleteOrderById(int id)
     {
-        throw new NotImplementedException();
+        var order = GetOrderById(id);
+
+        _gameStopContext.Orders.Remove(order!);
+        _gameStopContext.SaveChanges();
     }
 
-    public Order GetOrderById(int id)
+    public Order? GetOrderById(int id)
     {
-        throw new NotImplementedException();
+        return _gameStopContext.Orders.Find(id);
     }
 
     public IEnumerable<Order> GetOrders()
     {
-        throw new NotImplementedException();
+        return _gameStopContext.Orders.ToList();
     }
 
-    public Order UpdateOrder(int id, Order order)
+    public void UpdateOrder(int id, Order _order)
     {
-        throw new NotImplementedException();
+        var order = GetOrderById(id)!;
+
+        order.ShippingStreetAddress = _order.ShippingStreetAddress;
+        order.ShippingCity = _order.ShippingCity;
+        order.ShippingState = _order.ShippingState;
+        order.ShippingZipCode = _order.ShippingZipCode;
+        order.PaymentMethod = _order.PaymentMethod;
+        order.Total = _order.Total;
+        order.Status = _order.Status;
+        
+        _gameStopContext.SaveChanges();
     }
 }

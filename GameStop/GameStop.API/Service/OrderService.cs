@@ -1,3 +1,4 @@
+using System.Runtime.Serialization;
 using GameStop.API.Model;
 using GameStop.API.Repository;
 
@@ -11,26 +12,36 @@ public class OrderService : IOrderService
 
     public Order CreateNewOrder(Order order)
     {
-        throw new NotImplementedException();
+        return _orderRepository.CreateNewOrder(order);
     }
 
-    public Order DeleteOrderById(int id)
+    public Order? DeleteOrderById(int id)
     {
-        throw new NotImplementedException();
+        var order = GetOrderById(id);
+
+        if ( order is not null ) _orderRepository.DeleteOrderById(id);
+
+        return order;
     }
 
-    public Order GetOrderById(int id)
+    public Order? GetOrderById(int id)
     {
-        throw new NotImplementedException();
+        if(id < 1 ) return null;
+
+        return _orderRepository.GetOrderById(id);
     }
 
     public IEnumerable<Order> GetOrders()
     {
-        throw new NotImplementedException();
+        return _orderRepository.GetOrders();
     }
 
-    public Order UpdateOrder(int id, Order order)
+    public Order? UpdateOrder(int id, Order _order)
     {
-        throw new NotImplementedException();
+        var order = GetOrderById(id);
+
+        if( order is not null ) _orderRepository.UpdateOrder(id, _order);
+
+        return order;
     }
 }

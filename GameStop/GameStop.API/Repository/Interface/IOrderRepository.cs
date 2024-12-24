@@ -6,7 +6,7 @@ public interface IOrderRepository
 {
     Order CreateNewOrder(Order order);
     IEnumerable<Order> GetOrders();
-    Order GetOrderById(int id);
-    Order UpdateOrder(int id, Order order);
-    Order DeleteOrderById(int id);
+    Order? GetOrderById(int id);
+    void UpdateOrder(int id, Order order);
+    void DeleteOrderById(int id);
 }
