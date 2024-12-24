@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace GameStop.TEST.DTO;
 
-public class DTOTest
+public class DTOTransferTest
 {
     [Fact]
     public void ToDTOTest()
@@ -41,9 +41,46 @@ public class DTOTest
         EntityToDTO<Account, AccountDTO>.ToDTO(account, actual);
 
         Assert.Equal(JsonConvert.SerializeObject(expected), JsonConvert.SerializeObject(actual));
-
-
     }
 
+    [Fact]
+    public void ToEntityTest(){
+
+        AccountDTO dto = new(){
+            FirstName = "Jean",
+            LastName = "Valenzuela",
+            AccountId = 0,
+            Email = "test@email.com",
+            Password = "password",
+            Age = 23,
+            ZipCode = 48197,
+            Street = "This Street",
+            City = "This city",
+            State = "This state"
+        };
+
+        Account expected = new(){
+            FirstName = "Jean",
+            LastName = "Valenzuela",
+            AccountId = 0,
+            Email = "test@email.com",
+            Password = "password",
+            Age = 23,
+            ZipCode = 48197,
+            Street = "This Street",
+            City = "This city",
+            State = "This state"
+        };
+
+        Account actual = new(){
+            Email = "test@email.com",
+            Password = "password"
+        };
+
+        DTOToEntity<AccountDTO, Account>.ToEntity(dto, actual);
+
+        Assert.Equal(JsonConvert.SerializeObject(expected), JsonConvert.SerializeObject(actual));
+
+    }
     
 }
