@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameStop.API", "GameStop.API\GameStop.API.csproj", "{E31F20C4-D6EA-4AB5-A674-F73FC835F50A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameStop.TEST", "GameStop.TEST\GameStop.TEST.csproj", "{9AE17557-E54A-4E89-B526-C352FD50B0D0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E31F20C4-D6EA-4AB5-A674-F73FC835F50A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E31F20C4-D6EA-4AB5-A674-F73FC835F50A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E31F20C4-D6EA-4AB5-A674-F73FC835F50A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E31F20C4-D6EA-4AB5-A674-F73FC835F50A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AE17557-E54A-4E89-B526-C352FD50B0D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AE17557-E54A-4E89-B526-C352FD50B0D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AE17557-E54A-4E89-B526-C352FD50B0D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AE17557-E54A-4E89-B526-C352FD50B0D0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {292AA98A-EE3C-48BE-8074-B75A44BE6C37}
+	EndGlobalSection
+EndGlobal
