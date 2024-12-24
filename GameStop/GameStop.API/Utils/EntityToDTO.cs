@@ -23,6 +23,5 @@ public class EntityToDTO<E, D>
 
             if (value != null) dtoProperty.SetValue(dto, value);
         }
-
     }
 }
