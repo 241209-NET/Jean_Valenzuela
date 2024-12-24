@@ -9,7 +9,12 @@ namespace GameStop.API.Controller;
 public class GameController : ControllerBase
 {
     private readonly IGameService _gameService;
-    public GameController(IGameService gameService) => _gameService = gameService;
+    private readonly IReviewService _reviewService;
+    public GameController(IGameService gameService, IReviewService reviewService)
+    {
+        _gameService = gameService;
+        _reviewService = reviewService;
+    }
 
     [HttpGet]
     public IActionResult GetGames()
@@ -53,5 +58,13 @@ public class GameController : ControllerBase
         if (game is null) return NotFound();
 
         return Ok(game);
+    }
+
+    [HttpGet("{GameId}/reviews")]
+    public IActionResult GetReviews(int GameId)
+    {
+        var reviews = _reviewService.GetReviews(GameId);
+
+        return Ok(reviews);
     }
 }

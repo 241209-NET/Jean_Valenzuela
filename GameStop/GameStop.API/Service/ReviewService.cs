@@ -30,9 +30,9 @@ public class ReviewService : IReviewService
         return _reviewRepository.GetReviewById(id);
     }
 
-    public IEnumerable<Review> GetReviews()
+    public IEnumerable<Review> GetReviews(int id)
     {
-        return _reviewRepository.GetReviews();
+        return _reviewRepository.GetReviews(id);
     }
 
     public Review? UpdateReview(int id, Review _review)

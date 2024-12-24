@@ -28,9 +28,9 @@ public class ReviewRepository : IReviewRepository
         return _gameStopContext.Reviews.Find(id);
     }
 
-    public IEnumerable<Review> GetReviews()
+    public IEnumerable<Review> GetReviews(int id)
     {
-        return _gameStopContext.Reviews.ToList();
+        return _gameStopContext.Reviews.Where(review => review.Game.GameId == id).ToList();
     }
 
     public void UpdateReview(int id, Review _review)
