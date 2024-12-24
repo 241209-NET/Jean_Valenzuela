@@ -9,28 +9,38 @@ public class ReviewService : IReviewService
 
     public ReviewService(IReviewRepository reviewRepository) => _reviewRepository = reviewRepository;
     
-    public Review CreateNewReview(Order order)
+    public Review CreateNewReview(Review review)
     {
-        throw new NotImplementedException();
+        return _reviewRepository.CreateNewReview(review);
     }
 
-    public Review DeleteReviewById(int id)
+    public Review? DeleteReviewById(int id)
     {
-        throw new NotImplementedException();
+        var review = GetReviewById(id);
+
+        if ( review is not null ) _reviewRepository.DeleteReviewById(id);
+
+        return review;
     }
 
-    public Review GetReviewById(int id)
+    public Review? GetReviewById(int id)
     {
-        throw new NotImplementedException();
+        if ( id < 1 ) return null;
+
+        return _reviewRepository.GetReviewById(id);
     }
 
     public IEnumerable<Review> GetReviews()
     {
-        throw new NotImplementedException();
+        return _reviewRepository.GetReviews();
     }
 
-    public Review UpdateReview(int id, Order order)
+    public Review? UpdateReview(int id, Review _review)
     {
-        throw new NotImplementedException();
+        var review = GetReviewById(id);
+
+        if ( review is not null) _reviewRepository.UpdateReview(id, _review);
+
+        return review;
     }
 }

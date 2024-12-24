@@ -8,28 +8,39 @@ public class ReviewRepository : IReviewRepository
     private readonly GameStopContext _gameStopContext;
     public ReviewRepository(GameStopContext gameStopContext) => _gameStopContext = gameStopContext;
     
-    public Review CreateNewReview(Order order)
+    public Review CreateNewReview(Review review)
     {
-        throw new NotImplementedException();
+        _gameStopContext.Reviews.Add(review);
+        _gameStopContext.SaveChanges();
+        return review;
     }
 
-    public Review DeleteReviewById(int id)
+    public void DeleteReviewById(int id)
     {
-        throw new NotImplementedException();
+        var review = GetReviewById(id);
+
+        _gameStopContext.Reviews.Remove(review!);
+        _gameStopContext.SaveChanges();
     }
 
-    public Review GetReviewById(int id)
+    public Review? GetReviewById(int id)
     {
-        throw new NotImplementedException();
+        return _gameStopContext.Reviews.Find(id);
     }
 
     public IEnumerable<Review> GetReviews()
     {
-        throw new NotImplementedException();
+        return _gameStopContext.Reviews.ToList();
     }
 
-    public Review UpdateReview(int id, Order order)
+    public void UpdateReview(int id, Review _review)
     {
-        throw new NotImplementedException();
+        var review = GetReviewById(id)!;
+
+        review.Description = _review.Description;
+        review.Date = _review.Date;
+        review.Rating = _review.Rating;
+
+        _gameStopContext.SaveChanges();
     }
 }

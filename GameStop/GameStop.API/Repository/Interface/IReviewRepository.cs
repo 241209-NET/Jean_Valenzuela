@@ -4,9 +4,9 @@ namespace GameStop.API.Repository;
 
 public interface IReviewRepository
 {
-    Review CreateNewReview(Order order);
+    Review CreateNewReview(Review order);
     IEnumerable<Review> GetReviews();
-    Review GetReviewById(int id);
-    Review UpdateReview(int id, Order order);
-    Review DeleteReviewById(int id);
+    Review? GetReviewById(int id);
+    void UpdateReview(int id, Review order);
+    void DeleteReviewById(int id);
 }
