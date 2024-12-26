@@ -1,5 +1,5 @@
 # **GameStop .NET API**
-This is a .NET API Application for a GameStop Online Store 
+This is a .NET API Application for a GameStop Online Store where user is able to purchase games, make reviews, make an account as well as retieving information about each entity.
 
 ## Project Members
 - Jean Carlos Valenzuela Sanchez
