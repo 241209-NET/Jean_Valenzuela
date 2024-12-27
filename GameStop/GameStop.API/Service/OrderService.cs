@@ -1,6 +1,8 @@
 using System.Runtime.Serialization;
+using GameStop.API.DTO;
 using GameStop.API.Model;
 using GameStop.API.Repository;
+using GameStop.API.Utils;
 
 namespace GameStop.API.Service;
 
@@ -10,9 +12,13 @@ public class OrderService : IOrderService
 
     public OrderService(IOrderRepository orderRepository) => _orderRepository = orderRepository;
 
-    public Order CreateNewOrder(Order order)
+    public Order CreateNewOrder(OrderDTO _order)
     {
-        return _orderRepository.CreateNewOrder(order);
+        Order order = new();
+
+        DTOToEntityRequest<OrderDTO, Order>.ToEntity(_order, order);
+
+        return _orderRepository.CreateNewOrder(order, _order.GameId);
     }
 
     public Order? DeleteOrderById(int id)
@@ -36,11 +42,11 @@ public class OrderService : IOrderService
         return _orderRepository.GetOrders();
     }
 
-    public Order? UpdateOrder(int id, Order _order)
+    public Order? UpdateOrder(int id, string status)
     {
         var order = GetOrderById(id);
 
-        if( order is not null ) _orderRepository.UpdateOrder(id, _order);
+        if( order is not null ) _orderRepository.UpdateOrder(id, status);
 
         return order;
     }

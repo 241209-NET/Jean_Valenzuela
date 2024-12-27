@@ -4,6 +4,7 @@ using GameStop.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameStop.API.Migrations
 {
     [DbContext(typeof(GameStopContext))]
-    partial class GameStopContextModelSnapshot : ModelSnapshot
+    [Migration("20241225232712_Initial_Create")]
+    partial class Initial_Create
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,7 +62,7 @@ namespace GameStop.API.Migrations
 
                     b.HasKey("AccountId");
 
-                    b.ToTable("Account", (string)null);
+                    b.ToTable("Account");
                 });
 
             modelBuilder.Entity("GameStop.API.Model.Game", b =>
@@ -90,7 +93,7 @@ namespace GameStop.API.Migrations
 
                     b.HasKey("GameId");
 
-                    b.ToTable("Game", (string)null);
+                    b.ToTable("Game");
                 });
 
             modelBuilder.Entity("GameStop.API.Model.GameOrder", b =>
@@ -105,18 +108,18 @@ namespace GameStop.API.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("GameOrder", (string)null);
+                    b.ToTable("GameOrder");
                 });
 
             modelBuilder.Entity("GameStop.API.Model.Order", b =>
                 {
-                    b.Property<int>("OrderId")
+                    b.Property<int>("OrderID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderID"));
 
-                    b.Property<int>("AccountId")
+                    b.Property<int>("AccountID")
                         .HasColumnType("int");
 
                     b.Property<string>("PaymentMethod")
@@ -140,11 +143,11 @@ namespace GameStop.API.Migrations
                     b.Property<double>("Total")
                         .HasColumnType("float");
 
-                    b.HasKey("OrderId");
+                    b.HasKey("OrderID");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("AccountID");
 
-                    b.ToTable("Order", (string)null);
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("GameStop.API.Model.Review", b =>
@@ -177,7 +180,7 @@ namespace GameStop.API.Migrations
 
                     b.HasIndex("GameId");
 
-                    b.ToTable("Review", (string)null);
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("GameStop.API.Model.GameOrder", b =>
@@ -199,7 +202,7 @@ namespace GameStop.API.Migrations
                 {
                     b.HasOne("GameStop.API.Model.Account", "Account")
                         .WithMany("Orders")
-                        .HasForeignKey("AccountId")
+                        .HasForeignKey("AccountID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

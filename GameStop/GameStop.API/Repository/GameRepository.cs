@@ -11,7 +11,7 @@ public class GameRepository : IGameRepository
 
     public Game CreateNewGame(Game game)
     {
-        _gameStopContext.Games.Add(game);
+        _gameStopContext.Game.Add(game);
         _gameStopContext.SaveChanges();
 
         return game;
@@ -20,18 +20,18 @@ public class GameRepository : IGameRepository
     public void DeleteGameById(int id)
     {
         var game = GetGameById(id);
-        _gameStopContext.Games.Remove(game!);
+        _gameStopContext.Game.Remove(game!);
         _gameStopContext.SaveChanges();
     }
 
     public Game? GetGameById(int id)
     {
-        return _gameStopContext.Games.Find(id);
+        return _gameStopContext.Game.Find(id);
     }
 
     public IEnumerable<Game> GetGames()
     {
-        return _gameStopContext.Games.ToList();
+        return _gameStopContext.Game.ToList();
     }
 
     public void UpdateGame(int id, Game _game)

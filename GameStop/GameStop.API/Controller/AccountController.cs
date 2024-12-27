@@ -1,3 +1,4 @@
+using GameStop.API.DTO;
 using GameStop.API.Model;
 using GameStop.API.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateAccount(Account account)
+    public IActionResult CreateAccount(AccountDTO account)
     {
         var newAccount = _accountService.CreateNewAccount(account);
 
@@ -29,7 +30,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateAccount(int id, Account _account)
+    public IActionResult UpdateAccount(int id, AccountDTO _account)
     {
         var account = _accountService.UpdateAccount(id, _account);
 

@@ -1,5 +1,7 @@
+using GameStop.API.DTO;
 using GameStop.API.Model;
 using GameStop.API.Repository;
+using GameStop.API.Utils;
 
 namespace GameStop.API.Service;
 
@@ -9,8 +11,10 @@ public class AccountService : IAccountService
 
     public AccountService(IAccountRepository accountRepository) => _accountRepository = accountRepository;
 
-    public Account CreateNewAccount(Account account)
+    public Account CreateNewAccount(AccountDTO _account)
     {
+        Account account = new();
+        DTOToEntityRequest<AccountDTO, Account>.ToEntity(_account, account);
         return _accountRepository.CreateNewAccount(account);
     }
 
@@ -35,11 +39,13 @@ public class AccountService : IAccountService
         return _accountRepository.GetAccounts();
     }
 
-    public Account? UpdateAccount(int id, Account _account)
+    public Account? UpdateAccount(int id, AccountDTO _account)
     {
         var account = GetAccountById(id);
 
-        if (account is not null) _accountRepository.UpdateAccount(id, _account);
+        DTOToEntityRequest<AccountDTO, Account>.ToEntity(_account, account!);
+
+        if (account is not null) _accountRepository.UpdateAccount(id, account);
 
         return account;
     }

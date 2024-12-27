@@ -2,7 +2,6 @@ namespace GameStop.API.DTO;
 
 public class GameDTO
 {
-    public int GameId { get; set; }
     public int Version { get; set; }
     public string? Name { get; set; }
     public string? Genre { get; set; }

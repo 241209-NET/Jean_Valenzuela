@@ -10,7 +10,7 @@ public class ReviewRepository : IReviewRepository
     
     public Review CreateNewReview(Review review)
     {
-        _gameStopContext.Reviews.Add(review);
+        _gameStopContext.Review.Add(review);
         _gameStopContext.SaveChanges();
         return review;
     }
@@ -19,18 +19,18 @@ public class ReviewRepository : IReviewRepository
     {
         var review = GetReviewById(id);
 
-        _gameStopContext.Reviews.Remove(review!);
+        _gameStopContext.Review.Remove(review!);
         _gameStopContext.SaveChanges();
     }
 
     public Review? GetReviewById(int id)
     {
-        return _gameStopContext.Reviews.Find(id);
+        return _gameStopContext.Review.Find(id);
     }
 
     public IEnumerable<Review> GetReviews(int id)
     {
-        return _gameStopContext.Reviews.Where(review => review.Game.GameId == id).ToList();
+        return _gameStopContext.Review.Where(review => review.Game.GameId == id).ToList();
     }
 
     public void UpdateReview(int id, Review _review)

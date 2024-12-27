@@ -1,5 +1,6 @@
 using GameStop.API.Data;
 using GameStop.API.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameStop.API.Repository;
 
@@ -10,7 +11,7 @@ public class AccountRepository : IAccountRepository
 
     public Account CreateNewAccount(Account account)
     {
-        _gameStopContext.Accounts.Add(account);
+        _gameStopContext.Account.Add(account);
         _gameStopContext.SaveChanges();
 
         return account;
@@ -20,18 +21,21 @@ public class AccountRepository : IAccountRepository
     {
         var account = GetAccountById(id);
 
-        _gameStopContext.Accounts.Remove(account!);
+        _gameStopContext.Account.Remove(account!);
         _gameStopContext.SaveChanges();
     }
 
     public Account? GetAccountById(int id)
     {
-        return _gameStopContext.Accounts.Find(id);
+        return _gameStopContext.Account.Find(id);
     }
 
     public IEnumerable<Account> GetAccounts()
     {
-        return _gameStopContext.Accounts.ToList();
+        return _gameStopContext.Account
+            .Include(o => o.Orders)
+            .Include(r => r.Reviews)
+            .ToList();
     }
 
     public void UpdateAccount(int id, Account _account)

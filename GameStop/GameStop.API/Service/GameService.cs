@@ -1,5 +1,7 @@
+using GameStop.API.DTO;
 using GameStop.API.Model;
 using GameStop.API.Repository;
+using GameStop.API.Utils;
 
 namespace GameStop.API.Service;
 
@@ -9,8 +11,10 @@ public class GameService : IGameService
 
     public GameService(IGameRepository gameRepository) => _gameRepository = gameRepository;
 
-    public Game CreateNewGame(Game game)
+    public Game CreateNewGame(GameDTO _game)
     {
+        Game game = new();
+        DTOToEntityRequest<GameDTO, Game>.ToEntity(_game, game);
         return _gameRepository.CreateNewGame(game);
     }
 
@@ -35,11 +39,13 @@ public class GameService : IGameService
         return _gameRepository.GetGames();
     }
 
-    public Game? UpdateGame(int id, Game _game)
+    public Game? UpdateGame(int id, GameDTO _game)
     {
         var game = GetGameById(id);
 
-        if (game is not null) _gameRepository.UpdateGame(id, _game);
+        DTOToEntityRequest<GameDTO, Game>.ToEntity(_game,game!);
+
+        if (game is not null) _gameRepository.UpdateGame(id, game);
 
         return game;
     }

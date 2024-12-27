@@ -1,3 +1,4 @@
+using GameStop.API.DTO;
 using GameStop.API.Model;
 using GameStop.API.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateNewOrder(Order _order)
+    public IActionResult CreateNewOrder(OrderDTO _order)
     {
         var order = _orderService.CreateNewOrder(_order);
 
@@ -28,9 +29,9 @@ public class OrderController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateOrder(int id ,Order _order)
+    public IActionResult UpdateOrder(int id ,string status)
     {
-        var order = _orderService.UpdateOrder(id, _order);
+        var order = _orderService.UpdateOrder(id, status);
 
         return Ok(order);
     }

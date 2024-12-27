@@ -1,5 +1,6 @@
 using GameStop.API.Data;
 using GameStop.API.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameStop.API.Repository;
 
@@ -8,9 +9,18 @@ public class OrderRepository : IOrderRepository
     private readonly GameStopContext _gameStopContext;
     public OrderRepository(GameStopContext gameStopContext) => _gameStopContext = gameStopContext;
     
-    public Order CreateNewOrder(Order order)
+    public Order CreateNewOrder(Order order, int[] games)
     {
-        _gameStopContext.Orders.Add(order);
+        _gameStopContext.Order.Add(order);
+        _gameStopContext.SaveChanges();
+
+        foreach(int id in games){
+            _gameStopContext.GameOrder.Add(new GameOrder(){
+                GameId = id,
+                OrderId = order.OrderId
+            });
+        }
+
         _gameStopContext.SaveChanges();
         return order;
     }
@@ -19,31 +29,28 @@ public class OrderRepository : IOrderRepository
     {
         var order = GetOrderById(id);
 
-        _gameStopContext.Orders.Remove(order!);
+        _gameStopContext.Order.Remove(order!);
         _gameStopContext.SaveChanges();
     }
 
     public Order? GetOrderById(int id)
     {
-        return _gameStopContext.Orders.Find(id);
+        return _gameStopContext.Order.Find(id);
     }
 
     public IEnumerable<Order> GetOrders()
     {
-        return _gameStopContext.Orders.ToList();
+        return _gameStopContext.Order
+            .Include(g => g.Games)
+            .Include(a => a.Account)
+            .ToList();
     }
 
-    public void UpdateOrder(int id, Order _order)
+    public void UpdateOrder(int id, string Status)
     {
         var order = GetOrderById(id)!;
 
-        order.ShippingStreetAddress = _order.ShippingStreetAddress;
-        order.ShippingCity = _order.ShippingCity;
-        order.ShippingState = _order.ShippingState;
-        order.ShippingZipCode = _order.ShippingZipCode;
-        order.PaymentMethod = _order.PaymentMethod;
-        order.Total = _order.Total;
-        order.Status = _order.Status;
+        order.Status = Status;
         
         _gameStopContext.SaveChanges();
     }

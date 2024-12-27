@@ -1,3 +1,4 @@
+using GameStop.API.DTO;
 using GameStop.API.Model;
 using GameStop.API.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,7 @@ public class GameController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateNewGame(Game _game)
+    public IActionResult CreateNewGame(GameDTO _game)
     {
         var game = _gameService.CreateNewGame(_game);
 
@@ -33,7 +34,7 @@ public class GameController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateGame(int id, Game _game)
+    public IActionResult UpdateGame(int id, GameDTO _game)
     {
         var game = _gameService.UpdateGame(id, _game);
 
