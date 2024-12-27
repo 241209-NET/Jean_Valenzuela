@@ -170,10 +170,13 @@ public class DTOTransferTest
             ShippingState = "Some State",
             ShippingStreetAddress = "Some Street",
             ShippingZipCode = "387123",
-            AccountId = 12
+            AccountId = 12,
+            GameId = [1]
         };
 
-        OrderDTO actual = new();
+        OrderDTO actual = new(){
+            GameId = [1]
+        };
 
         EntityToDTORequest<Order, OrderDTO>.ToDTO(order, actual);
 
@@ -193,7 +196,8 @@ public class DTOTransferTest
             ShippingState = "Some State",
             ShippingStreetAddress = "Some Street",
             ShippingZipCode = "387123",
-            AccountId = 12
+            AccountId = 12,
+            GameId = [1]
         };
 
         Order expected = new()

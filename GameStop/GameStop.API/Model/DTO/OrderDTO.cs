@@ -12,6 +12,6 @@ public class OrderDTO
     public string? ShippingCity { get; set; }
     public string? ShippingState { get; set; }
     public int AccountId { get; set; }
-    public int[]? GameId { get; set; }
+    public required int[] GameId { get; set; }
 
 }
