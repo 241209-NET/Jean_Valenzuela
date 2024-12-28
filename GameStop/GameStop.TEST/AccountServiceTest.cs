@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace GameStop.TEST.Service;
 
-public class AccountSericeTest
+public class AccountServiceTest
 {
     [Fact]
     public void GetAllAccountsTest()
