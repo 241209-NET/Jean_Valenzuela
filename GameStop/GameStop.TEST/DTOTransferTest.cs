@@ -8,6 +8,27 @@ namespace GameStop.TEST.DTO;
 public class DTOTransferTest
 {
     [Fact]
+    public void ToDTONullExceptionTest()
+    {
+        Account? account = null;
+
+        AccountDTO? actual = null;
+
+        Assert.Throws<ArgumentException>(() => EntityToDTORequest<Account, AccountDTO>.ToDTO(account!, actual!));
+    }
+
+    [Fact]
+    public void ToEntityNullExceptionTest()
+    {
+
+        AccountDTO? dto = null;
+        Account? actual = null;
+
+        Assert.Throws<ArgumentException>(() => DTOToEntityRequest<AccountDTO, Account>.ToEntity(dto!, actual!));
+
+    }
+
+    [Fact]
     public void AccountToDTOTest()
     {
         Account account = new Account()
