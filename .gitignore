@@ -1,3 +1,5 @@
 **/bin
 **/obj
 GameStop/.vscode/settings.json
+**/TestResults
+**/coveragereport
