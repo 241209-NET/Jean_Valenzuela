@@ -16,18 +16,81 @@ public class AccountServiceTest
         AccountService accountService = new(mockAccountRepository.Object);
 
         List<Account> accounts = [
-            new Account{AccountId = 0, Age = 23, ZipCode = 13432},
-            new Account{AccountId = 1, Age = 24, ZipCode = 34566},
-            new Account{AccountId = 2, Age = 25, ZipCode = 56788},
-            new Account{AccountId = 3, Age = 26, ZipCode = 34565},
-            new Account{AccountId = 4, Age = 27, ZipCode = 84563}
-        ];
+            new Account{AccountId= 1,
+            FirstName= "Jean",
+            LastName= "Sanchez",
+            Email= "test@email.com",
+            Password= "password",
+            Age= 0,
+            ZipCode= 0,
+            Street= "This Street",
+            City= "This city",
+            State= "This State",
+            Orders= [new Order
+            {
+                OrderId= 1,
+                Status= "Complete",
+                Total= 149.99,
+                PaymentMethod= "Card",
+                ShippingZipCode= "48197",
+                ShippingStreetAddress= "This Address",
+                ShippingCity= "This City",
+                ShippingState= "This State",
+                AccountId= 1,
+                Games= null,
+                Account= null
+            }
+            ],
+            Reviews= [ new Review
+            {
+                ReviewId= 2,
+                Description= "Really Good Game!!!!",
+                Date= DateOnly.MaxValue,
+                Rating= 4,
+                AccountId= 1,
+                GameId= 3,
+                Account= null,
+                Game= null
+            }
+            ]},
+            ];
+
+            List<ResponseAccountDTO> dto = [
+            new ResponseAccountDTO{
+            FirstName= "Jean",
+            LastName= "Sanchez",
+            Email= "test@email.com",
+            Password= "password",
+            Age= 0,
+            ZipCode= 0,
+            Street= "This Street",
+            City= "This city",
+            State= "This State",
+            Orders= [new AccountOrders
+            {
+                Status= "Complete",
+                Total= 149.99,
+                PaymentMethod= "Card",
+                ShippingZipCode= "48197",
+                ShippingStreetAddress= "This Address",
+                ShippingCity= "This City",
+                ShippingState= "This State",
+            }
+            ],
+            Reviews= [ new ReviewDTO
+            {
+                Description= "Really Good Game!!!!",
+                Date= DateOnly.MaxValue,
+                Rating= 4,
+            }
+            ]},
+            ];
 
         mockAccountRepository.Setup(x => x.GetAccounts()).Returns(accounts);
 
         var result = accountService.GetAccounts();
 
-        Assert.Equal(JsonConvert.SerializeObject(accounts), JsonConvert.SerializeObject(result));
+        Assert.Equal(JsonConvert.SerializeObject(dto), JsonConvert.SerializeObject(result));
     }
 
     [Theory]

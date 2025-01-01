@@ -50,7 +50,7 @@ public class AccountController : ControllerBase
     [HttpDelete]
     public IActionResult DeleteAccountById(int id)
     {
-        var account = _accountService.GetAccountById(id);
+        var account = _accountService.DeleteAccountById(id);
 
         if (account is null) return NotFound();
 

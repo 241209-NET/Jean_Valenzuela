@@ -15,6 +15,6 @@ public class Review
 
     [ForeignKey("Game")]
     public int GameId { get; set; }
-    public virtual required Account Account{ get; set; }
-    public virtual required Game Game{ get; set; }
+    public virtual required Account? Account{ get; set; }
+    public virtual required Game? Game{ get; set; }
 }

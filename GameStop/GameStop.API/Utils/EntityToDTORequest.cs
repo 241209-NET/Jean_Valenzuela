@@ -21,7 +21,14 @@ public class EntityToDTORequest<E, D>
 
             if (dtoProperty != null) value = entityProperty.GetValue(entity)!;
 
-            if (value != null) dtoProperty!.SetValue(dto, value);
+            try
+            {
+                if (value != null) dtoProperty!.SetValue(dto, value);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Skipping Collection");
+            }
         }
     }
 }

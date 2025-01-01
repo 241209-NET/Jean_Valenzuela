@@ -30,7 +30,7 @@ public class ReviewRepository : IReviewRepository
 
     public IEnumerable<Review> GetReviews(int id)
     {
-        return _gameStopContext.Review.Where(review => review.Game.GameId == id).ToList();
+        return _gameStopContext.Review.Where(review => review.Game!.GameId == id).ToList();
     }
 
     public void UpdateReview(int id, Review _review)

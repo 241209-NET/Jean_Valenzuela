@@ -6,7 +6,7 @@ namespace GameStop.API.Service;
 public interface IAccountService
 {
     Account CreateNewAccount(AccountDTO account);
-    IEnumerable<Account> GetAccounts();
+    IEnumerable<ResponseAccountDTO> GetAccounts();
     Account? GetAccountById(int id);
     Account? UpdateAccount(int id, AccountDTO account);
     Account? DeleteAccountById(int id);

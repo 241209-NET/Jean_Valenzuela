@@ -61,11 +61,19 @@ public class GameController : ControllerBase
         return Ok(game);
     }
 
-    [HttpGet("{GameId}/reviews")]
+    [HttpGet("{GameId}/review")]
     public IActionResult GetReviews(int GameId)
     {
         var reviews = _reviewService.GetReviews(GameId);
 
         return Ok(reviews);
+    }
+
+    [HttpPost("{GameId}/review/{AccountId}")]
+    public IActionResult CreateReview(ReviewDTO _review, int GameId, int AccountId)
+    {
+        var review = _reviewService.CreateReview(_review, GameId, AccountId);
+
+        return Ok(review);
     }
 }

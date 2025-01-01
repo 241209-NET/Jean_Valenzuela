@@ -59,7 +59,7 @@ namespace GameStop.API.Migrations
 
                     b.HasKey("AccountId");
 
-                    b.ToTable("Account");
+                    b.ToTable("Account", (string)null);
                 });
 
             modelBuilder.Entity("GameStop.API.Model.Game", b =>
@@ -90,7 +90,7 @@ namespace GameStop.API.Migrations
 
                     b.HasKey("GameId");
 
-                    b.ToTable("Game");
+                    b.ToTable("Game", (string)null);
                 });
 
             modelBuilder.Entity("GameStop.API.Model.GameOrder", b =>
@@ -105,7 +105,7 @@ namespace GameStop.API.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("GameOrder");
+                    b.ToTable("GameOrder", (string)null);
                 });
 
             modelBuilder.Entity("GameStop.API.Model.Order", b =>
@@ -144,7 +144,7 @@ namespace GameStop.API.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Order", (string)null);
                 });
 
             modelBuilder.Entity("GameStop.API.Model.Review", b =>
@@ -176,7 +176,7 @@ namespace GameStop.API.Migrations
 
                     b.HasIndex("GameId");
 
-                    b.ToTable("Review");
+                    b.ToTable("Review", (string)null);
                 });
 
             modelBuilder.Entity("GameStop.API.Model.GameOrder", b =>

@@ -1,12 +1,13 @@
+using GameStop.API.DTO;
 using GameStop.API.Model;
 
 namespace GameStop.API.Service;
 
 public interface IReviewService
 {
-    Review CreateNewReview(Review order);
+    Review CreateReview(ReviewDTO order, int GameId, int AccountId);
     IEnumerable<Review> GetReviews(int gameId);
     Review? GetReviewById(int id);
-    Review? UpdateReview(int id, Review order);
+    Review? UpdateReview(int id, ReviewDTO order);
     Review? DeleteReviewById(int id);
 }

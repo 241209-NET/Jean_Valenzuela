@@ -1,5 +1,7 @@
+using GameStop.API.DTO;
 using GameStop.API.Model;
 using GameStop.API.Repository;
+using GameStop.API.Utils;
 
 namespace GameStop.API.Service;
 
@@ -9,8 +11,17 @@ public class ReviewService : IReviewService
 
     public ReviewService(IReviewRepository reviewRepository) => _reviewRepository = reviewRepository;
     
-    public Review CreateNewReview(Review review)
+    public Review CreateReview(ReviewDTO _review, int GameId, int AccountId)
     {
+        Review review = new(){
+            AccountId = AccountId,
+            GameId = GameId,
+            Account = null,
+            Game = null
+        };
+
+        DTOToEntityRequest<ReviewDTO, Review>.ToEntity(_review, review);
+
         return _reviewRepository.CreateNewReview(review);
     }
 
@@ -35,11 +46,13 @@ public class ReviewService : IReviewService
         return _reviewRepository.GetReviews(id);
     }
 
-    public Review? UpdateReview(int id, Review _review)
+    public Review? UpdateReview(int id, ReviewDTO _review)
     {
         var review = GetReviewById(id);
 
-        if ( review is not null) _reviewRepository.UpdateReview(id, _review);
+        DTOToEntityRequest<ReviewDTO, Review>.ToEntity(_review, review!);
+
+        if ( review is not null) _reviewRepository.UpdateReview(id, review);
 
         return review;
     }
