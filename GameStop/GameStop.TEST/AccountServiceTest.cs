@@ -55,8 +55,9 @@ public class AccountServiceTest
             ]},
             ];
 
-            List<ResponseAccountDTO> dto = [
-            new ResponseAccountDTO{
+        List<ResponseAccountDTO> dto = [
+        new ResponseAccountDTO{
+            AccountId = 1,
             FirstName= "Jean",
             LastName= "Sanchez",
             Email= "test@email.com",
@@ -101,14 +102,78 @@ public class AccountServiceTest
         Mock<IAccountRepository> mockAccountRepository = new();
         AccountService accountService = new(mockAccountRepository.Object);
 
-        Account account = new()
+        Account input = new()
         {
             AccountId = 1,
-            Age = 23,
-            ZipCode = 13432
-        };
+            FirstName= "Jean",
+            LastName= "Sanchez",
+            Email= "test@email.com",
+            Password= "password",
+            Age= 0,
+            ZipCode= 0,
+            Street= "This Street",
+            City= "This city",
+            State= "This State",
+            Orders= [new Order
+            {
+                OrderId= 1,
+                Status= "Complete",
+                Total= 149.99,
+                PaymentMethod= "Card",
+                ShippingZipCode= "48197",
+                ShippingStreetAddress= "This Address",
+                ShippingCity= "This City",
+                ShippingState= "This State",
+                AccountId= 1,
+                Games= null,
+                Account= null
+            }
+            ],
+            Reviews= [ new Review
+            {
+                ReviewId= 2,
+                Description= "Really Good Game!!!!",
+                Date= DateOnly.MaxValue,
+                Rating= 4,
+                AccountId= 1,
+                GameId= 3,
+                Account= null,
+                Game= null
+            }
+            ]};
+            
+        ResponseAccountDTO expected = new()
+        {
+            AccountId = 1,
+            FirstName= "Jean",
+            LastName= "Sanchez",
+            Email= "test@email.com",
+            Password= "password",
+            Age= 0,
+            ZipCode= 0,
+            Street= "This Street",
+            City= "This city",
+            State= "This State",
+            Orders= [new AccountOrders
+            {
+                Status= "Complete",
+                Total= 149.99,
+                PaymentMethod= "Card",
+                ShippingZipCode= "48197",
+                ShippingStreetAddress= "This Address",
+                ShippingCity= "This City",
+                ShippingState= "This State",
+            }
+            ],
+            Reviews= [ new ReviewDTO
+            {
+                Description= "Really Good Game!!!!",
+                Date= DateOnly.MaxValue,
+                Rating= 4,
+            }
+            ]};
 
-        mockAccountRepository.Setup(x => x.GetAccountById(accountId)).Returns(account);
+        mockAccountRepository.Setup(x => x.GetAccountById(accountId)).Returns(input);
 
         var result = accountService.GetAccountById(accountId);
 
@@ -118,31 +183,34 @@ public class AccountServiceTest
         }
         else
         {
-            Assert.Equal(JsonConvert.SerializeObject(account), JsonConvert.SerializeObject(result));
+            Assert.Equal(JsonConvert.SerializeObject(expected), JsonConvert.SerializeObject(result));
         }
     }
 
     [Theory]
+    [InlineData(0)]
     [InlineData(3)]
-    [InlineData(4)]
     public void DeleteAccountByIdTest(int AccountId)
     {
         Mock<IAccountRepository> mockAccountRepository = new();
         AccountService accountService = new(mockAccountRepository.Object);
 
-        List<Account> accounts = [
-            new Account{AccountId = 0, Age = 23, ZipCode = 13432},
-            new Account{AccountId = 1, Age = 24, ZipCode = 34566},
-            new Account{AccountId = 2, Age = 25, ZipCode = 56788},
-            new Account{AccountId = 3, Age = 26, ZipCode = 34565},
-            new Account{AccountId = 4, Age = 27, ZipCode = 84563}
-        ];
+        Account input = new() { AccountId = 3, Age = 26, ZipCode = 34565, Orders = [], Reviews = [] };
 
-        mockAccountRepository.Setup(x => x.GetAccountById(AccountId)).Returns(accounts.First(a => a.AccountId == AccountId));
+        ResponseAccountDTO expected = new() { AccountId = 3, Age = 26, ZipCode = 34565, Orders = [], Reviews = []};
 
-        accountService.DeleteAccountById(AccountId);
+        mockAccountRepository.Setup(x => x.GetAccountById(AccountId)).Returns(input);
 
-        mockAccountRepository.Verify(x => x.DeleteAccountById(AccountId), Times.Once());
+        var result = accountService.DeleteAccountById(AccountId);
+
+        if(AccountId == 0)
+        {
+            Assert.Null(result);
+        }
+        else
+        {
+            Assert.Equal(JsonConvert.SerializeObject(expected), JsonConvert.SerializeObject(result));
+        }
     }
 
     [Fact]
@@ -153,33 +221,31 @@ public class AccountServiceTest
 
         AccountDTO account = new() { Age = 23, ZipCode = 13432 };
 
-        accountService.CreateNewAccount(account);
+        Account input = new() { Age = 23, ZipCode = 13432 };
 
-        mockAccountRepository.Verify(x => x.CreateNewAccount(It.IsAny<Account>()), Times.Once());
+        mockAccountRepository.Setup(x => x.CreateNewAccount(It.IsAny<Account>())).Returns(input);
+
+        var result = accountService.CreateNewAccount(account);
+
+        Assert.Equal(JsonConvert.SerializeObject(account), JsonConvert.SerializeObject(result));
     }
 
-    [Theory]
-    [InlineData(1)]
-    [InlineData(2)]
-    public void UpdateAccountTest(int accountId)
+    [Fact]
+    public void UpdateAccountTest()
     {
         Mock<IAccountRepository> mockAccountRepository = new();
         AccountService accountService = new(mockAccountRepository.Object);
 
-        List<Account> accounts = [
-            new Account{AccountId = 0, Age = 23, ZipCode = 13432},
-            new Account{AccountId = 1, Age = 24, ZipCode = 34566},
-            new Account{AccountId = 2, Age = 25, ZipCode = 56788},
-            new Account{AccountId = 3, Age = 26, ZipCode = 34565},
-            new Account{AccountId = 4, Age = 27, ZipCode = 84563}
-        ];
+        Account input = new() { AccountId = 1, Age = 23, ZipCode = 13432 };
 
         AccountDTO account = new() { Age = 23, ZipCode = 13432 };
 
-        mockAccountRepository.Setup(x => x.GetAccountById(accountId)).Returns(accounts.First(x => x.AccountId == accountId));
+        mockAccountRepository.Setup(x => x.GetAccountById(1)).Returns(input);
 
-        accountService.UpdateAccount(accountId, account);
+        var result = accountService.UpdateAccount(1, account);
 
-        mockAccountRepository.Verify(x => x.UpdateAccount(accountId, It.IsAny<Account>()), Times.Once());
+        mockAccountRepository.Verify(x => x.UpdateAccount(1, It.IsAny<Account>()), Times.Once());
+
+        Assert.Equal(JsonConvert.SerializeObject(account), JsonConvert.SerializeObject(result));
     }
 }

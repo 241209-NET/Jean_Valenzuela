@@ -11,27 +11,58 @@ public class AccountService : IAccountService
 
     public AccountService(IAccountRepository accountRepository) => _accountRepository = accountRepository;
 
-    public Account CreateNewAccount(AccountDTO _account)
+    public AccountDTO CreateNewAccount(AccountDTO _account)
     {
         Account account = new();
         DTOToEntityRequest<AccountDTO, Account>.ToEntity(_account, account);
-        return _accountRepository.CreateNewAccount(account);
+
+        var account_res = _accountRepository.CreateNewAccount(account);
+
+        AccountDTO res = new();
+
+        EntityToDTORequest<Account, AccountDTO>.ToDTO(account_res, res);
+
+        return res;
     }
 
-    public Account? DeleteAccountById(int id)
+    public ResponseAccountDTO? DeleteAccountById(int id)
     {
         var account = GetAccountById(id);
 
-        if(account is not null) _accountRepository.DeleteAccountById(id);
+        if (account is not null) _accountRepository.DeleteAccountById(id);
 
         return account;
     }
 
-    public Account? GetAccountById(int id)
+    public ResponseAccountDTO? GetAccountById(int id)
     {
-        if( id < 1) return null;
+        if (id < 1) return null;
 
-        return _accountRepository.GetAccountById(id);
+        var account = _accountRepository.GetAccountById(id);
+
+        ResponseAccountDTO res = new()
+        {
+            Orders = [],
+            Reviews = []
+        };
+
+        EntityToDTORequest<Account, ResponseAccountDTO>.ToDTO(account!, res);
+
+        foreach (Order order in account!.Orders!)
+        {
+            AccountOrders accountOrders = new();
+            EntityToDTORequest<Order, AccountOrders>.ToDTO(order, accountOrders);
+            res.Orders!.Add(accountOrders);
+        }
+
+        foreach (Review review in account.Reviews!)
+        {
+            ReviewDTO orderReview = new();
+            EntityToDTORequest<Review, ReviewDTO>.ToDTO(review, orderReview);
+            res.Reviews!.Add(orderReview);
+        }
+
+        return res;
     }
 
     public IEnumerable<ResponseAccountDTO> GetAccounts()
@@ -40,22 +71,25 @@ public class AccountService : IAccountService
 
         List<ResponseAccountDTO> res = [];
 
-        foreach(Account a in accounts)
+        foreach (Account a in accounts)
         {
-            ResponseAccountDTO dto = new(){
+            ResponseAccountDTO dto = new()
+            {
                 Orders = [],
                 Reviews = []
             };
 
             EntityToDTORequest<Account, ResponseAccountDTO>.ToDTO(a, dto);
 
-            foreach(Order order in a.Orders!){
+            foreach (Order order in a.Orders!)
+            {
                 AccountOrders accountOrders = new();
                 EntityToDTORequest<Order, AccountOrders>.ToDTO(order, accountOrders);
                 dto.Orders!.Add(accountOrders);
             }
 
-            foreach(Review review in a.Reviews!){
+            foreach (Review review in a.Reviews!)
+            {
                 ReviewDTO orderReview = new();
                 EntityToDTORequest<Review, ReviewDTO>.ToDTO(review, orderReview);
                 dto.Reviews!.Add(orderReview);
@@ -67,14 +101,18 @@ public class AccountService : IAccountService
         return res;
     }
 
-    public Account? UpdateAccount(int id, AccountDTO _account)
+    public AccountDTO? UpdateAccount(int id, AccountDTO _account)
     {
-        var account = GetAccountById(id);
+        var account = _accountRepository.GetAccountById(id);
 
         DTOToEntityRequest<AccountDTO, Account>.ToEntity(_account, account!);
 
         if (account is not null) _accountRepository.UpdateAccount(id, account);
 
-        return account;
+        AccountDTO res = new();
+
+        EntityToDTORequest<Account, AccountDTO>.ToDTO(account!, res);
+
+        return res;
     }
 }

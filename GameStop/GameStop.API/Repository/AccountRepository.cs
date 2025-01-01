@@ -27,7 +27,17 @@ public class AccountRepository : IAccountRepository
 
     public Account? GetAccountById(int id)
     {
-        return _gameStopContext.Account.Find(id);
+        var res = _gameStopContext.Account.Single(a => a.AccountId == id);
+
+        _gameStopContext.Entry(res)
+            .Collection(o => o.Orders!)
+            .Load();
+
+        _gameStopContext.Entry(res)
+            .Collection(r => r.Reviews!)
+            .Load();
+        
+        return res;
     }
 
     public IEnumerable<Account> GetAccounts()
