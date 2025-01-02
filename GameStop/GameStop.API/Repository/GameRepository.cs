@@ -26,12 +26,20 @@ public class GameRepository : IGameRepository
 
     public Game? GetGameById(int id)
     {
-        return _gameStopContext.Game.Find(id);
+        var res = _gameStopContext.Game.Single(g => g.GameId == id);
+
+        _gameStopContext.Entry(res)
+            .Collection(r => r.Reviews!)
+            .Load();
+
+        return res;
     }
 
     public IEnumerable<Game> GetGames()
     {
-        return _gameStopContext.Game.ToList();
+        return _gameStopContext.Game
+            .Include(r => r.Reviews)
+            .ToList();
     }
 
     public void UpdateGame(int id, Game _game)

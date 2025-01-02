@@ -11,14 +11,21 @@ public class GameService : IGameService
 
     public GameService(IGameRepository gameRepository) => _gameRepository = gameRepository;
 
-    public Game CreateNewGame(GameDTO _game)
+    public GameDTO CreateNewGame(GameDTO _game)
     {
         Game game = new();
         DTOToEntityRequest<GameDTO, Game>.ToEntity(_game, game);
-        return _gameRepository.CreateNewGame(game);
+
+        var game_res = _gameRepository.CreateNewGame(game);
+
+        GameDTO res = new ();
+
+        EntityToDTORequest<Game, GameDTO>.ToDTO(game_res,res);
+
+        return res;
     }
 
-    public Game? DeleteGameById(int id)
+    public ResposeGameDTO? DeleteGameById(int id)
     {
         var game = GetGameById(id);
 
@@ -27,26 +34,68 @@ public class GameService : IGameService
         return game;
     }
 
-    public Game? GetGameById(int id)
+    public ResposeGameDTO? GetGameById(int id)
     {
         if (id < 1) return null;
 
-        return _gameRepository.GetGameById(id);
+        var game = _gameRepository.GetGameById(id);
+
+        ResposeGameDTO res = new()
+        {
+            Reviews = []
+        };
+
+        EntityToDTORequest<Game, ResposeGameDTO>.ToDTO(game!, res);
+
+        foreach(Review review in game!.Reviews!)
+        {
+            ReviewDTO gameReview = new();
+            EntityToDTORequest<Review, ReviewDTO>.ToDTO(review, gameReview);
+            res.Reviews.Add(gameReview);
+        }
+
+        return res;
     }
 
-    public IEnumerable<Game> GetGames()
+    public IEnumerable<ResposeGameDTO> GetGames()
     {
-        return _gameRepository.GetGames();
+        var games = _gameRepository.GetGames();
+
+        List<ResposeGameDTO> res = [];
+
+        foreach (Game game in games)
+        {
+            ResposeGameDTO dto = new() 
+            {
+                Reviews = []
+            };
+
+            EntityToDTORequest<Game, ResposeGameDTO>.ToDTO(game, dto);
+
+            foreach ( Review review in game.Reviews!)
+            {
+                ReviewDTO gameReview = new();
+                EntityToDTORequest<Review, ReviewDTO>.ToDTO(review, gameReview);
+                dto.Reviews.Add(gameReview);
+            }
+
+            res.Add(dto);
+        }
+        return res;
     }
 
-    public Game? UpdateGame(int id, GameDTO _game)
+    public GameDTO? UpdateGame(int id, GameDTO _game)
     {
-        var game = GetGameById(id);
+        var game =_gameRepository.GetGameById(id);
 
-        DTOToEntityRequest<GameDTO, Game>.ToEntity(_game,game!);
+        DTOToEntityRequest<GameDTO, Game>.ToEntity(_game, game!);
 
         if (game is not null) _gameRepository.UpdateGame(id, game);
 
-        return game;
+        GameDTO res = new();
+
+        EntityToDTORequest<Game, GameDTO>.ToDTO(game!,res);
+
+        return res;
     }
 }

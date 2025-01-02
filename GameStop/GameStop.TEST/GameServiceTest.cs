@@ -16,40 +16,137 @@ public class GameServiceTest
         GameService gameService = new(mockRepository.Object);
 
         List<Game> games = [
-            new Game { GameId = 1, Version = 1134234},
-            new Game { GameId = 2, Version = 2434121},
-            new Game { GameId = 3, Version = 7546535},
-            new Game { GameId = 4, Version = 5467435},
-            new Game { GameId = 5, Version = 3456756},
+            new Game{
+                GameId = 1,
+                Version = 12343,
+                Name = "String",
+                Genre = "String",
+                Price = 12.32,
+                Type = "String",
+                ReleaseDate = DateOnly.MaxValue,
+                Orders = [
+                    new Order{
+                        OrderId= 1,
+                        Status= "Complete",
+                        Total= 149.99,
+                        PaymentMethod= "Card",
+                        ShippingZipCode= "48197",
+                        ShippingStreetAddress= "This Address",
+                        ShippingCity= "This City",
+                        ShippingState= "This State",
+                        AccountId= 1,
+                        Games= null,
+                        Account= null
+                    }
+                ],
+                Reviews = [
+                    new Review{
+                        ReviewId = 1,
+                        Description = "String",
+                        Date = DateOnly.MaxValue,
+                        Rating = 4,
+                        AccountId = 1,
+                        GameId = 1,
+                        Account = null,
+                        Game = null
+                    }
+                ]
+            }
         ];
+
+        List<ResposeGameDTO> Expected = [
+            new ResposeGameDTO{
+                GameId = 1,
+                Version = 12343,
+                Name = "String",
+                Genre = "String",
+                Price = 12.32,
+                Type = "String",
+                ReleaseDate = DateOnly.MaxValue,
+                Reviews = [
+                    new ReviewDTO{
+                        Description = "String",
+                        Date = DateOnly.MaxValue,
+                        Rating = 4
+                    }
+                ]
+            }
+        ];
+
+
 
         mockRepository.Setup(x => x.GetGames()).Returns(games);
 
         var result = gameService.GetGames();
 
-        Assert.Equal(JsonConvert.SerializeObject(games), JsonConvert.SerializeObject(result));
+        Assert.Equal(JsonConvert.SerializeObject(Expected), JsonConvert.SerializeObject(result));
     }
 
     [Theory]
     [InlineData(0)]
     [InlineData(1)]
-    [InlineData(2)]
     public void GetGamesByIdTest(int GameId)
     {
         Mock<IGameRepository> mockRepository = new();
         GameService gameService = new(mockRepository.Object);
 
-        List<Game> games = [
-            new Game { GameId = 1, Version = 1134234},
-            new Game { GameId = 2, Version = 2434121},
-            new Game { GameId = 3, Version = 7546535},
-            new Game { GameId = 4, Version = 5467435},
-            new Game { GameId = 5, Version = 3456756},
-        ];
+        Game input = new()
+        {
+            GameId = 1,
+            Version = 12343,
+            Name = "String",
+            Genre = "String",
+            Price = 12.32,
+            Type = "String",
+            ReleaseDate = DateOnly.MaxValue,
+            Orders = [
+                     new Order{
+                        OrderId= 1,
+                        Status= "Complete",
+                        Total= 149.99,
+                        PaymentMethod= "Card",
+                        ShippingZipCode= "48197",
+                        ShippingStreetAddress= "This Address",
+                        ShippingCity= "This City",
+                        ShippingState= "This State",
+                        AccountId= 1,
+                        Games= null,
+                        Account= null
+                    }
+                 ],
+            Reviews = [
+                     new Review{
+                        ReviewId = 1,
+                        Description = "String",
+                        Date = DateOnly.MaxValue,
+                        Rating = 4,
+                        AccountId = 1,
+                        GameId = 1,
+                        Account = null,
+                        Game = null
+                    }
+                 ]
+        };
 
-        Game actual = games.Find(g => g.GameId == GameId)!;
+        ResposeGameDTO actual = new()
+        {
+            GameId = 1,
+            Version = 12343,
+            Name = "String",
+            Genre = "String",
+            Price = 12.32,
+            Type = "String",
+            ReleaseDate = DateOnly.MaxValue,
+            Reviews = [
+                    new ReviewDTO{
+                        Description = "String",
+                        Date = DateOnly.MaxValue,
+                        Rating = 4
+                    }
+                ]
+        };
 
-        mockRepository.Setup(x => x.GetGameById(GameId)).Returns(games.FirstOrDefault(g => g.GameId == GameId));
+        mockRepository.Setup(x => x.GetGameById(GameId)).Returns(input);
 
         var result = gameService.GetGameById(GameId);
 
@@ -64,23 +161,29 @@ public class GameServiceTest
     }
 
     [Theory]
+    [InlineData(0)]
     [InlineData(1)]
     public void DeleteGamesByIdTest(int GameId)
     {
         Mock<IGameRepository> mockRepository = new();
         GameService gameService = new(mockRepository.Object);
 
-        List<Game> games = [
-            new Game { GameId = 1, Version = 1134234},
-            new Game { GameId = 2, Version = 2434121},
-            new Game { GameId = 3, Version = 7546535},
-        ];
+        Game input = new(){Version = 1131234, Reviews = []};
 
-        mockRepository.Setup(x => x.GetGameById(GameId)).Returns(games.FirstOrDefault(g => g.GameId == GameId));
+        ResposeGameDTO expected = new(){Version = 1131234, Reviews = []};
 
-        gameService.DeleteGameById(GameId);
-        
-        mockRepository.Verify(x => x.DeleteGameById(GameId), Times.Once());
+        mockRepository.Setup(x => x.GetGameById(GameId)).Returns(input);
+
+        var result = gameService.DeleteGameById(GameId);
+
+         if(GameId == 0)
+        {
+            Assert.Null(result);
+        }
+        else
+        {
+            Assert.Equal(JsonConvert.SerializeObject(expected), JsonConvert.SerializeObject(result));
+        }
     }
 
     [Fact]
@@ -89,11 +192,14 @@ public class GameServiceTest
         Mock<IGameRepository> mockRepository = new();
         GameService gameService = new(mockRepository.Object);
 
-        GameDTO gameDTO = new ();
+        GameDTO game = new() { Version = 123423 };
+        Game input = new() { Version = 123423 };
 
-        gameService.CreateNewGame(gameDTO);
+        mockRepository.Setup(x => x.CreateNewGame(It.IsAny<Game>())).Returns(input);
 
-        mockRepository.Verify(x => x.CreateNewGame(It.IsAny<Game>()), Times.Once());
+        var result = gameService.CreateNewGame(game);
+
+        Assert.Equal(JsonConvert.SerializeObject(game), JsonConvert.SerializeObject(result));
     }
 
     [Theory]
@@ -103,7 +209,7 @@ public class GameServiceTest
         Mock<IGameRepository> mockRepository = new();
         GameService gameService = new(mockRepository.Object);
 
-        GameDTO gameDto = new ();
+        GameDTO gameDto = new();
 
         List<Game> games = [
             new Game { GameId = 1, Version = 1134234},

@@ -5,9 +5,9 @@ namespace GameStop.API.Service;
 
 public interface IGameService
 {
-    Game CreateNewGame(GameDTO game);
-    IEnumerable<Game> GetGames();
-    Game? GetGameById(int id);
-    Game? UpdateGame(int id, GameDTO game);
-    Game? DeleteGameById(int id);
+    GameDTO CreateNewGame(GameDTO game);
+    IEnumerable<ResposeGameDTO> GetGames();
+    ResposeGameDTO? GetGameById(int id);
+    GameDTO? UpdateGame(int id, GameDTO game);
+    ResposeGameDTO? DeleteGameById(int id);
 }
