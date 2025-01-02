@@ -5,9 +5,9 @@ namespace GameStop.API.Service;
 
 public interface IOrderService
 {
-    Order CreateNewOrder(OrderDTO order);
-    IEnumerable<Order> GetOrders();
-    Order? GetOrderById(int id);
-    Order? UpdateOrder(int id, string status);
-    Order? DeleteOrderById(int id);
+    OrderDTO CreateNewOrder(OrderDTO order);
+    IEnumerable<ResponseOrderDTO> GetOrders();
+    ResponseOrderDTO? GetOrderById(int id);
+    ResponseOrderUpdateDTO? UpdateOrder(int id, string status);
+    ResponseOrderDTO? DeleteOrderById(int id);
 }

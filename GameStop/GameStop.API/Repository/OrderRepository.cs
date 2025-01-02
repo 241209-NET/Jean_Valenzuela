@@ -35,7 +35,17 @@ public class OrderRepository : IOrderRepository
 
     public Order? GetOrderById(int id)
     {
-        return _gameStopContext.Order.Find(id);
+        var res = _gameStopContext.Order.Single( o => o.OrderId == id);
+
+        _gameStopContext.Entry(res)
+            .Collection(g => g.Games!)
+            .Load();
+
+        _gameStopContext.Entry(res)
+            .Reference(a => a.Account)
+            .Load();
+
+        return res;
     }
 
     public IEnumerable<Order> GetOrders()

@@ -18,7 +18,7 @@ public class GameService : IGameService
 
         var game_res = _gameRepository.CreateNewGame(game);
 
-        GameDTO res = new ();
+        GameDTO res = new();
 
         EntityToDTORequest<Game, GameDTO>.ToDTO(game_res,res);
 

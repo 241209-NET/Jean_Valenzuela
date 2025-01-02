@@ -17,16 +17,42 @@ public class OrderServiceTest
         OrderService orderService = new(mockRepo.Object);
 
         List<Order> orders = [
-            new Order { OrderId = 1, Total = 30.99, AccountId = 2},
-            new Order { OrderId = 2, Total = 35.99, AccountId = 2},
-            new Order { OrderId = 3, Total = 32.99, AccountId = 2}
+            new Order{
+                OrderId = 1,
+                Status = "String",
+                Games = [
+                    new Game{
+                        GameId = 1,
+                        Version = 2
+                    }
+                ],
+                Account = new Account{
+                    AccountId = 1,
+                    LastName = "String"
+                }
+            }
+        ];
+
+        List<ResponseOrderDTO> dto = [
+            new ResponseOrderDTO{
+                OrderId = 1,
+                Status = "String",
+                Games = [
+                    new GameDTO{
+                        Version = 2
+                    }
+                ],
+                Account = new AccountDTO{
+                    LastName = "String"
+                }
+            }
         ];
 
         mockRepo.Setup(x => x.GetOrders()).Returns(orders);
 
         var result = orderService.GetOrders();
 
-        Assert.Equal(JsonConvert.SerializeObject(orders), JsonConvert.SerializeObject(result));
+        Assert.Equal(JsonConvert.SerializeObject(dto), JsonConvert.SerializeObject(result));
     }
 
     [Theory]
@@ -38,15 +64,40 @@ public class OrderServiceTest
         Mock<IOrderRepository> mockRepo = new();
         OrderService orderService = new(mockRepo.Object);
 
-        List<Order> orders = [
-            new Order { OrderId = 1, Total = 30.99, AccountId = 2},
-            new Order { OrderId = 2, Total = 35.99, AccountId = 2},
-            new Order { OrderId = 3, Total = 32.99, AccountId = 2}
-        ];
+        Order input = new()
+        {
+            OrderId = 1,
+            Status = "String",
+            Games = [
+                    new Game{
+                        GameId = 1,
+                        Version = 2
+                    }
+                ],
+            Account = new Account
+            {
+                AccountId = 1,
+                LastName = "String"
+            }
+        };
 
-        Order actual = orders.FirstOrDefault(o => o.OrderId == OrderId)!;
+        ResponseOrderDTO expected = new()
+        {
+            OrderId = 1,
+            Status = "String",
+            Games = [
+                    new GameDTO{
+                        Version = 2
+                    }
+                ],
+            Account = new AccountDTO
+            {
+                LastName = "String"
+            }
+        };
 
-        mockRepo.Setup(x => x.GetOrderById(OrderId)).Returns(orders.FirstOrDefault(o => o.OrderId == OrderId));
+
+        mockRepo.Setup(x => x.GetOrderById(OrderId)).Returns(input);
 
         var result = orderService.GetOrderById(OrderId);
 
@@ -56,23 +107,62 @@ public class OrderServiceTest
         }
         else
         {
-            Assert.Equal(JsonConvert.SerializeObject(actual), JsonConvert.SerializeObject(result));
+            Assert.Equal(JsonConvert.SerializeObject(expected), JsonConvert.SerializeObject(result));
         }
     }
 
-    [Fact]
-    public void DeleteOrderByIdTest()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(3)]
+    public void DeleteOrderByIdTest(int OrderId)
     {
         Mock<IOrderRepository> mockRepo = new();
         OrderService orderService = new(mockRepo.Object);
 
-        Order actual = new() { OrderId = 1, Total = 30.99, AccountId = 2 };
+        Order input = new()
+        {
+            OrderId = 1,
+            Status = "String",
+            Games = [
+                    new Game{
+                        GameId = 1,
+                        Version = 2
+                    }
+                ],
+            Account = new Account
+            {
+                AccountId = 1,
+                LastName = "String"
+            }
+        };
 
-        mockRepo.Setup(x => x.GetOrderById(actual.OrderId)).Returns(actual);
+        ResponseOrderDTO expected = new()
+        {
+            OrderId = 1,
+            Status = "String",
+            Games = [
+                    new GameDTO{
+                        Version = 2
+                    }
+                ],
+            Account = new AccountDTO
+            {
+                LastName = "String"
+            }
+        };
 
-        orderService.DeleteOrderById(actual.OrderId);
+        mockRepo.Setup(x => x.GetOrderById(OrderId)).Returns(input);
 
-        mockRepo.Verify(x => x.DeleteOrderById(actual.OrderId));
+        var result = orderService.DeleteOrderById(OrderId);
+
+        if(OrderId == 0)
+        {
+            Assert.Null(result);
+        }
+        else
+        {
+            Assert.Equal(JsonConvert.SerializeObject(expected), JsonConvert.SerializeObject(result));
+        }
     }
 
     [Fact]
@@ -83,9 +173,13 @@ public class OrderServiceTest
 
         OrderDTO order = new() { Total = 40.99, GameId = [1, 2, 3] };
 
-        orderService.CreateNewOrder(order);
+        Order input = new() {Total = 40.99};
 
-        mockRepo.Verify(x => x.CreateNewOrder(It.IsAny<Order>(), order.GameId), Times.Once());
+        mockRepo.Setup(x => x.CreateNewOrder(It.IsAny<Order>(), order.GameId)).Returns(input);
+
+        var result = orderService.CreateNewOrder(order);
+
+        Assert.Equal(JsonConvert.SerializeObject(order), JsonConvert.SerializeObject(result));
     }
 
     [Fact]
@@ -94,7 +188,7 @@ public class OrderServiceTest
         Mock<IOrderRepository> mockRepo = new();
         OrderService orderService = new(mockRepo.Object);
 
-        Order order = new() { OrderId = 1};
+        Order order = new() { OrderId = 1 };
 
         int OrderId = order.OrderId;
 
