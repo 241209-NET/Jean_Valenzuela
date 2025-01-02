@@ -54,8 +54,8 @@ public class GameServiceTest
             }
         ];
 
-        List<ResposeGameDTO> Expected = [
-            new ResposeGameDTO{
+        List<ResponseGameDTO> Expected = [
+            new ResponseGameDTO{
                 GameId = 1,
                 Version = 12343,
                 Name = "String",
@@ -128,7 +128,7 @@ public class GameServiceTest
                  ]
         };
 
-        ResposeGameDTO actual = new()
+        ResponseGameDTO actual = new()
         {
             GameId = 1,
             Version = 12343,
@@ -170,7 +170,7 @@ public class GameServiceTest
 
         Game input = new(){Version = 1131234, Reviews = []};
 
-        ResposeGameDTO expected = new(){Version = 1131234, Reviews = []};
+        ResponseGameDTO expected = new(){Version = 1131234, Reviews = []};
 
         mockRepository.Setup(x => x.GetGameById(GameId)).Returns(input);
 

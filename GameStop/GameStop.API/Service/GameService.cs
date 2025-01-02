@@ -25,7 +25,7 @@ public class GameService : IGameService
         return res;
     }
 
-    public ResposeGameDTO? DeleteGameById(int id)
+    public ResponseGameDTO? DeleteGameById(int id)
     {
         var game = GetGameById(id);
 
@@ -34,18 +34,18 @@ public class GameService : IGameService
         return game;
     }
 
-    public ResposeGameDTO? GetGameById(int id)
+    public ResponseGameDTO? GetGameById(int id)
     {
         if (id < 1) return null;
 
         var game = _gameRepository.GetGameById(id);
 
-        ResposeGameDTO res = new()
+        ResponseGameDTO res = new()
         {
             Reviews = []
         };
 
-        EntityToDTORequest<Game, ResposeGameDTO>.ToDTO(game!, res);
+        EntityToDTORequest<Game, ResponseGameDTO>.ToDTO(game!, res);
 
         foreach(Review review in game!.Reviews!)
         {
@@ -57,20 +57,20 @@ public class GameService : IGameService
         return res;
     }
 
-    public IEnumerable<ResposeGameDTO> GetGames()
+    public IEnumerable<ResponseGameDTO> GetGames()
     {
         var games = _gameRepository.GetGames();
 
-        List<ResposeGameDTO> res = [];
+        List<ResponseGameDTO> res = [];
 
         foreach (Game game in games)
         {
-            ResposeGameDTO dto = new() 
+            ResponseGameDTO dto = new() 
             {
                 Reviews = []
             };
 
-            EntityToDTORequest<Game, ResposeGameDTO>.ToDTO(game, dto);
+            EntityToDTORequest<Game, ResponseGameDTO>.ToDTO(game, dto);
 
             foreach ( Review review in game.Reviews!)
             {

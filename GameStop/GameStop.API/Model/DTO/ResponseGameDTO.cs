@@ -1,6 +1,6 @@
 namespace GameStop.API.DTO;
 
-public class ResposeGameDTO
+public class ResponseGameDTO
 {
     public int GameId { get; set; }
     public int Version { get; set; }
