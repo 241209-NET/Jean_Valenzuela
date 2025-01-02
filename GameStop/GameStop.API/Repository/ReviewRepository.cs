@@ -1,5 +1,6 @@
 using GameStop.API.Data;
 using GameStop.API.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameStop.API.Repository;
 
@@ -15,32 +16,10 @@ public class ReviewRepository : IReviewRepository
         return review;
     }
 
-    public void DeleteReviewById(int id)
-    {
-        var review = GetReviewById(id);
-
-        _gameStopContext.Review.Remove(review!);
-        _gameStopContext.SaveChanges();
-    }
-
-    public Review? GetReviewById(int id)
-    {
-        return _gameStopContext.Review.Find(id);
-    }
-
     public IEnumerable<Review> GetReviews(int id)
     {
-        return _gameStopContext.Review.Where(review => review.Game!.GameId == id).ToList();
-    }
-
-    public void UpdateReview(int id, Review _review)
-    {
-        var review = GetReviewById(id)!;
-
-        review.Description = _review.Description;
-        review.Date = _review.Date;
-        review.Rating = _review.Rating;
-
-        _gameStopContext.SaveChanges();
+        return _gameStopContext.Review.Where(review => review.Game!.GameId == id)
+            .Include(a => a.Account)
+            .ToList();
     }
 }

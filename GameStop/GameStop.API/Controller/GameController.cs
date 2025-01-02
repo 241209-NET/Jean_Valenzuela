@@ -61,6 +61,8 @@ public class GameController : ControllerBase
         return Ok(game);
     }
 
+    //Review Routing
+
     [HttpGet("{GameId}/review")]
     public IActionResult GetReviews(int GameId)
     {

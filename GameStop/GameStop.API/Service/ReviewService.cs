@@ -11,7 +11,7 @@ public class ReviewService : IReviewService
 
     public ReviewService(IReviewRepository reviewRepository) => _reviewRepository = reviewRepository;
     
-    public Review CreateReview(ReviewDTO _review, int GameId, int AccountId)
+    public ReviewDTO CreateReview(ReviewDTO _review, int GameId, int AccountId)
     {
         Review review = new(){
             AccountId = AccountId,
@@ -19,41 +19,37 @@ public class ReviewService : IReviewService
             Account = null,
             Game = null
         };
-
         DTOToEntityRequest<ReviewDTO, Review>.ToEntity(_review, review);
 
-        return _reviewRepository.CreateNewReview(review);
+        var review_res = _reviewRepository.CreateNewReview(review);
+
+        ReviewDTO res = new();
+
+        EntityToDTORequest<Review,ReviewDTO>.ToDTO(review_res, res);
+
+        return res;
     }
 
-    public Review? DeleteReviewById(int id)
+    public IEnumerable<ResponseReviewDTO> GetReviews(int id)
     {
-        var review = GetReviewById(id);
+        var reviews = _reviewRepository.GetReviews(id);
 
-        if ( review is not null ) _reviewRepository.DeleteReviewById(id);
+        List<ResponseReviewDTO> res = [];
 
-        return review;
-    }
+        foreach (Review review in reviews)
+        {
+            ResponseReviewDTO dto = new()
+            {
+                Account = new()
+            };
 
-    public Review? GetReviewById(int id)
-    {
-        if ( id < 1 ) return null;
+            EntityToDTORequest<Review, ResponseReviewDTO>.ToDTO(review, dto);
 
-        return _reviewRepository.GetReviewById(id);
-    }
+            EntityToDTORequest<Account, AccountDTO>.ToDTO(review.Account!, dto.Account);
 
-    public IEnumerable<Review> GetReviews(int id)
-    {
-        return _reviewRepository.GetReviews(id);
-    }
+            res.Add(dto);
+        }
 
-    public Review? UpdateReview(int id, ReviewDTO _review)
-    {
-        var review = GetReviewById(id);
-
-        DTOToEntityRequest<ReviewDTO, Review>.ToEntity(_review, review!);
-
-        if ( review is not null) _reviewRepository.UpdateReview(id, review);
-
-        return review;
+        return res;
     }
 }
